@@ -14,7 +14,7 @@ class Request {
 
 	public:
 		// construieste un request de tip GET
-		    char *compute_get_request(const char *host, const char *url, char *url_params = NULL,
+		char *compute_get_request(const char *host, const char *url, char *url_params = NULL,
 		    const char *auth = NULL, std::vector<std::string> *cookies = NULL) {
 
 		    char *message = (char*)calloc(BUFLEN, sizeof(char));
