@@ -1,0 +1,73 @@
+			Protocoale de comunicatie - Tema 3 - Client HTTP
+
+	Implementarea abordata se bazeaza pe urmatoarea structura de fisiere:
+		- tasks.cpp -> entry point-ul proiectului. In acest fisier se gaseste clasa Tasks care expune cate o
+		metoda pentru rezolvarea fiecaruia din cele 5 task-uri strans legate intre ele. Tinand cont ca task-urile
+		depind unul de celelelalte voi prezenta implementarea tinand cont de acest lant de dependinte. Ok?
+		Daca ai ajuns aici prespun ca raspunsul tau a fost afirmativ la intrebarea anterioara. Primul task, 
+		realizat de metoda task1(), presupune trimiterea catre server a unui request, pentru ca acesta sa 
+		ne trimita prima prajiturica mult asteptata, precum si informatiile necesare pentru a rezolva task-ul 
+		urmator(task-ul 2, probabil stiai, dar am vrut sa fiu sigur). Metoda parseaza raspunsul primit si 
+		salveaza informatiile primite intr-o structura numita Fields(ai putina rabdare te rog, deoarece 
+		voi detalia mai jos structura) pe care o si returneaza. Acum ca task-ul 1 este done, urmeaza task-ul 2.
+		Task-ul 2 este rezolvat de metoda task2() care primeste drept argument structura creata de metoda task1()
+		(ti-am zis de ea mai sus). Metoda creeza un request prin intermediul caruia dorim sa ne autentificam
+		("nenea dau prajituri moca" trebuie sa stie cu cine interactioneaza). Trimite request-ul catre server, 
+		si, server-ul, baiat finut, ne trimite un raspuns, din nou cu prajiturica mult asteptata si indicatiile 
+		pentru task-ul urmator. Apoi, metoda parseaza raspunsul si salveaza si ea informatiile necesare
+		task-ului urmator in faimoasa structura(mai ai putina rabdare, si ti-o voi prezenta), pe care o 
+		returneaza.In acest moment avem doua task-uri rezolvate, deci am mancat doua prajituri, dar inca nu
+		m-am saturat, asa ca trecem la task-ul 3. Task-ul 3 este rezolvat de metoda(cred ca ai ghicit) task3(...)
+		care primeste un argument de tipul Fields. Metoda creeza un request inserand in url-ul requestului 
+		raspunsurile la faimoasele intrebari primite drept raspuns pentru ca am rezolvat task2. Raspunsurile
+		sunt : omul si numele. Trimite request-ul catre server si asteapta raspunsul acestuia care contine, ghici,
+		mult asteptata prajiturica, precum si indicatiile pentru a putea rezolva urmatorul task. Odata primit 
+		raspunsul, acesta este parsat iar informatiile sunt salvate in faimoasa structura(inca putin si vei 
+		descoperi faimoasa structura), structura pe care o returneaza, deoarece este necesara la task-ul urmator.
+		Task-ul 4, care presupune obtinerea cheii catre comoara mult cautata, este rezolvat de metoda task4(...) 
+		care primeste drept argument o structura creeata la task-ul anterior. Metoda creeaza request-ul necesar 
+		obtinerii cheii catre comoara, de asemenea nu uita ca ii trebui autorizare, deci aduga in header-ul 
+		mesajului token-ul primit pentru ca a rezolvat task2. Dupa creeare request-ului, il trimite catre server, 
+		iar de la acesta primeste indicatiile prntru urmatorul task. Dupa primirea raspunsului, trece la 
+		parsarea acestuia si salvarea informatiilor intr-o structura Fields, pe care o returneaza. In acest 
+		raspuns se afla si cheia catre comoara. Probabil te intrebi(prespun ca nu stii) ce presupune aceasta 
+		cheie. Pai hai sa te lamuresc. Presupune aflarea vremii din Bucuresti(esti dezamagit, nu?, asa am 
+		fost eu). Pentru determinarea vremii din Bucuresti(capitala Romaniei) se utilizeaza metoda 
+		getWeather(...) care creeaza un request si-l trimite catre un server(Dumnezeu stie de acest server) 
+		pentru ca acesta sa-i furnizeze date despre vremea din Bucuresti. Probabil te intrebi: dar in raspuns 
+		nu exista adresa IP a acestui server misterios, ci numele host-ului deci cum am putut realiza request-ul, 
+		in conditile in care aveam nevoie de IP-ul serverului? .Pai permite-mi sa-ti raspund: metoda getIP(...) 
+		a facut un pic de magie si m-a ajutat in aflarea adresei IP a serverului misterios. Dupa determinarea 
+		vremii(apropo, acest misterios server nu mi-a dat si o prajiturica drept raspuns :(( ) si salvarea ei 
+		in structura faimoasa(in cateva momente o vei descoperii, deci inca putina rabdare, te rog) alaturi 
+		de informatiile necesare pentru rezolvarea task-ului urmator, informatii obtinute in urma parsarii, 
+		am returnat structura creeata si am trecut la rezolvarea ultimuli task. Ultimul task, este rezolvat 
+		de metoda task5. Aceasta metoda presupune creearea unui request utilizand informatiile de la task-ul 
+		anterior, salvate in faimoasa structura, trimiterea request-ului catre server, si , ghici, primirea 
+		comorii. Cam lunga povestea, sper ca nu te-ai plictisit, pentru ca ea inca nu s-a terminat.
+		- client.h -> imporatanta acestui fisier este data de faptul ca el contine clasa Client care expune 
+		metodele de conectare/deconectare (de) la server, trimitere mesaj catre server, primire raspuns de la 
+		server.
+		- request.h -> in acerst fiser se gaseste clasa Request care expune doua metoda foarte importante, repet, 
+		foarte importante, cum sunt: compute_get_request(...), care creeaza un request de tip GET, si 
+		compute_post_request(...) care creeaza un request de tip POST.
+		- helpers.h -> acest fisier contine un macro de verificare a erorilor, si ..., definitia faimoasei 
+		structurii numita Fields. Aceasta structura este alcatuita din cateva campuri esentiale, si anume:
+			- url -> retine un string care reprezinta url requestu-lui
+			- method -> tipul request-ului(GET sau POST)
+			- type -> tipul mesajului (application/x-www-form-urlencoded sau application/json)
+			- data -> un vector de perechi(cheie, valoare)
+			- cookies_lines -> un vector in care se salveaza cookies primite de la server.
+		- parson.c, parson.h -> reprezinta biblioteca de parsare a mesajelor de tip json. Am ales aceasta biblioteca, 
+		deoarece responsabilii temei au sugerat-o in enuntul temei. Am utilizat biblioteca pentru a parsa body-ul 
+		de tip json din raspunsurile primite de la server, ca urmare a rezolvarii unui task anterior. Cu ajutorul 
+		bibliotecii am parsat mesajul, pentru a obtine informatiile necesare rezolvarii task-ului urmator, informatii 
+		salvate in faimoasa structura numita Fields(sper ca nu ai uitat de ea :)) ).
+	So, in mare cam asta a fost ideea abordata pentru rezolvarea temei. Vreau sa-i felicit pe responasbili 
+	deoarce a fost o tema foarte fun.
+
+	Indicatii compilare si rulare:
+		make -> va compila proiectul si va rezulta executabilul tasks.
+		make run -> va rula cu valgrind executabilul. OBS: timpul de rulare este de aproximativ 59 secunde
+		make clean -> va sterge executabilul
+
