@@ -14,8 +14,8 @@ class Client {
 	private:
 		int sockfd;
 		socklen_t addrlen;
-    	struct sockaddr_in server_addr;
-    	int status;
+		struct sockaddr_in server_addr;
+		int status;
 
 	public:
 		// deschide o conexiune
@@ -27,12 +27,12 @@ class Client {
 			// completare informatii despre adresa serverului
 			memset((char *) &server_addr, 0, sizeof(struct sockaddr_in));
 			server_addr.sin_family = ip_type;
-		    server_addr.sin_addr.s_addr = inet_addr(serv_IP.c_str());
-		    server_addr.sin_port = htons(serv_port);
+		    	server_addr.sin_addr.s_addr = inet_addr(serv_IP.c_str());
+		    	server_addr.sin_port = htons(serv_port);
 
-		    // conectare server
-		    status = connect(sockfd, (struct sockaddr *)&server_addr, sizeof(struct sockaddr));
-		    DIE(status < 0, "connection fails");
+		    	// conectare server
+		    	status = connect(sockfd, (struct sockaddr *)&server_addr, sizeof(struct sockaddr));
+		    	DIE(status < 0, "connection fails");
 		}
 
 		// inchide o conexiune
@@ -43,7 +43,7 @@ class Client {
 
 		// trimite un mesaj catre server
 		void send_message(char* message) {
-			int sent = 0;
+		    int sent = 0;
 		    int total = strlen(message);
 
 		    do {
@@ -60,7 +60,7 @@ class Client {
 
 		// primeste un mesaj de la server
 		char *receive_message() {
-			char *response = (char*)calloc(BUFLEN, sizeof(char));
+		    char *response = (char*)calloc(BUFLEN, sizeof(char));
 		    int total = BUFLEN;
 		    int received = 0;
 		    
