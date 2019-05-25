@@ -24,7 +24,7 @@ struct Fields {
 	std::string method;
 	std::string type;
 	std::vector<std::pair<std::string, std::string>> data;
-    std::vector<std::string> cookies_lines;
+        std::vector<std::string> cookies_lines;
 };
 
 #endif
