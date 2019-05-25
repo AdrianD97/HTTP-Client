@@ -45,7 +45,7 @@ class Tasks {
 
 		// obtine adresa IP asociata server-ului identificat prin numele primit ca parametru
 		const char *getIP(char *name) {
-			int ret;
+		    int ret;
 		    struct addrinfo hints, *res;
 		    char buff[INET_ADDRSTRLEN];
 		    const char *result;
@@ -59,13 +59,13 @@ class Tasks {
 		    }
 
 		    struct sockaddr_in *help = (struct sockaddr_in *) res->ai_addr;
-    		result = (char*)inet_ntop(res->ai_family, &(help->sin_addr), buff, res->ai_addrlen);
-    		ip = (char*)calloc(strlen(result) + 1, sizeof(char));
-    		strcpy((char*)ip, (char*)result);
+    		    result = (char*)inet_ntop(res->ai_family, &(help->sin_addr), buff, res->ai_addrlen);
+    		    ip = (char*)calloc(strlen(result) + 1, sizeof(char));
+    		    strcpy((char*)ip, (char*)result);
 
-    		freeaddrinfo(res);
+    		    freeaddrinfo(res);
 
-			return ip;
+		    return ip;
 		}
 
 		// obtine vremea din Bucuresti
