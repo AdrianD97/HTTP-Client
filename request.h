@@ -14,8 +14,8 @@ class Request {
 
 	public:
 		// construieste un request de tip GET
-		char *compute_get_request(const char *host, const char *url, char *url_params = NULL,
-			const char *auth = NULL, std::vector<std::string> *cookies = NULL) {
+		    char *compute_get_request(const char *host, const char *url, char *url_params = NULL,
+		    const char *auth = NULL, std::vector<std::string> *cookies = NULL) {
 
 		    char *message = (char*)calloc(BUFLEN, sizeof(char));
 		    char *line = (char*)calloc(LINELEN, sizeof(char));
@@ -64,7 +64,7 @@ class Request {
 
 		// construieste un request de tip POST
 		char *compute_post_request(const char *host, const char *url, char *form_data, const char* type, 
-			const char *auth = NULL, std::vector<std::string> *cookies = NULL) {
+		    const char *auth = NULL, std::vector<std::string> *cookies = NULL) {
 		    char *message = (char*)calloc(BUFLEN, sizeof(char));
 		    char *line = (char*)calloc(LINELEN, sizeof(char));
 		    
